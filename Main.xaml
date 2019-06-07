@@ -52,7 +52,6 @@
   <Flowchart sap:VirtualizedContainerService.HintSize="1303,760" sap2010:WorkflowViewState.IdRef="Flowchart_1">
     <Flowchart.Variables>
       <Variable x:TypeArguments="sd:DataTable" Default="[New System.Data.DataTable]" Name="DataTable_url" />
-      <Variable x:TypeArguments="sd:DataTable" Default="[New System.Data.DataTable]" Name="DataTable_contents" />
       <Variable x:TypeArguments="x:String" Name="url1" />
       <Variable x:TypeArguments="sd:DataRow" Name="u" />
       <Variable x:TypeArguments="ui:Browser" Name="browser" />
@@ -73,8 +72,9 @@
       <Variable x:TypeArguments="sd:DataTable" Name="DataTable_url2" />
       <Variable x:TypeArguments="x:Int32" Default="0" Name="j" />
       <Variable x:TypeArguments="sd:DataTable" Name="Content_DT2016" />
-      <Variable x:TypeArguments="sd:DataTable" Name="Content_DT2013" />
       <Variable x:TypeArguments="sd:DataRow" Name="r1" />
+      <Variable x:TypeArguments="sd:DataTable" Name="DataTable_contents1" />
+      <Variable x:TypeArguments="sd:DataTable" Name="DataTable_contents2" />
     </Flowchart.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -98,12 +98,21 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
       <Sequence DisplayName="init" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="Sequence_5">
+        <Sequence.Variables>
+          <Variable x:TypeArguments="x:Boolean" Name="exists" />
+        </Sequence.Variables>
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
-        <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Excel Application Scope" sap:VirtualizedContainerService.HintSize="414,391" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" WorkbookPath="data\urls.xlsx">
+        <ui:PathExists DisplayName="Path Exists" Exists="[exists]" sap:VirtualizedContainerService.HintSize="464,89" sap2010:WorkflowViewState.IdRef="PathExists_1" Path="data\Report\Report.xlsx" PathType="File" />
+        <If Condition="[exists]" sap:VirtualizedContainerService.HintSize="464,208" sap2010:WorkflowViewState.IdRef="If_8">
+          <If.Then>
+            <ui:Delete ContinueOnError="{x:Null}" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Delete_1" Path="data\Report\Report.xlsx" />
+          </If.Then>
+        </If>
+        <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Excel Application Scope" sap:VirtualizedContainerService.HintSize="464,391" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" WorkbookPath="data\urls.xlsx">
           <ui:ExcelApplicationScope.Body>
             <ActivityAction x:TypeArguments="ui:WorkbookApplication">
               <ActivityAction.Argument>
@@ -129,7 +138,7 @@
             </ActivityAction>
           </ui:ExcelApplicationScope.Body>
         </ui:ExcelApplicationScope>
-        <ui:OpenBrowser BrowserType="Chrome" DisplayName="Open Browser" Hidden="False" sap:VirtualizedContainerService.HintSize="414,198" sap2010:WorkflowViewState.IdRef="OpenBrowser_1" NewSession="True" Private="False" UiBrowser="[browser1]" Url="[url1]">
+        <ui:OpenBrowser BrowserType="Chrome" DisplayName="Open Browser" Hidden="False" sap:VirtualizedContainerService.HintSize="464,198" sap2010:WorkflowViewState.IdRef="OpenBrowser_1" NewSession="True" Private="False" UiBrowser="[browser1]" Url="[url1]">
           <ui:OpenBrowser.Body>
             <ActivityAction x:TypeArguments="x:Object">
               <ActivityAction.Argument>
@@ -161,15 +170,13 @@
             </ActivityAction>
           </ui:OpenBrowser.Body>
         </ui:OpenBrowser>
-        <ui:BuildDataTable DataTable="[Content_DT2016]" DisplayName="2016 Content DT" sap:VirtualizedContainerService.HintSize="414,59" sap2010:WorkflowViewState.IdRef="BuildDataTable_2" TableInfo="&lt;NewDataSet&gt;&#xD;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xD;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xD;&#xA;      &lt;xs:complexType&gt;&#xD;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xD;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xD;&#xA;            &lt;xs:complexType&gt;&#xD;&#xA;              &lt;xs:sequence&gt;&#xD;&#xA;                &lt;xs:element name=&quot;content_name&quot;&gt;&#xD;&#xA;                  &lt;xs:simpleType&gt;&#xD;&#xA;                    &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xD;&#xA;                      &lt;xs:maxLength value=&quot;100&quot; /&gt;&#xD;&#xA;                    &lt;/xs:restriction&gt;&#xD;&#xA;                  &lt;/xs:simpleType&gt;&#xD;&#xA;                &lt;/xs:element&gt;&#xD;&#xA;                &lt;xs:element name=&quot;items&quot; type=&quot;xs:int&quot; /&gt;&#xD;&#xA;              &lt;/xs:sequence&gt;&#xD;&#xA;            &lt;/xs:complexType&gt;&#xD;&#xA;          &lt;/xs:element&gt;&#xD;&#xA;        &lt;/xs:choice&gt;&#xD;&#xA;      &lt;/xs:complexType&gt;&#xD;&#xA;    &lt;/xs:element&gt;&#xD;&#xA;  &lt;/xs:schema&gt;&#xD;&#xA;&lt;/NewDataSet&gt;" />
-        <ui:BuildDataTable DataTable="[Content_DT2013]" DisplayName="2013Content DT" sap:VirtualizedContainerService.HintSize="414,59" sap2010:WorkflowViewState.IdRef="BuildDataTable_3" TableInfo="&lt;NewDataSet&gt;&#xD;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xD;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xD;&#xA;      &lt;xs:complexType&gt;&#xD;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xD;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xD;&#xA;            &lt;xs:complexType&gt;&#xD;&#xA;              &lt;xs:sequence&gt;&#xD;&#xA;                &lt;xs:element name=&quot;content_name&quot;&gt;&#xD;&#xA;                  &lt;xs:simpleType&gt;&#xD;&#xA;                    &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xD;&#xA;                      &lt;xs:maxLength value=&quot;100&quot; /&gt;&#xD;&#xA;                    &lt;/xs:restriction&gt;&#xD;&#xA;                  &lt;/xs:simpleType&gt;&#xD;&#xA;                &lt;/xs:element&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Item2013&quot; type=&quot;xs:int&quot; /&gt;&#xD;&#xA;              &lt;/xs:sequence&gt;&#xD;&#xA;            &lt;/xs:complexType&gt;&#xD;&#xA;          &lt;/xs:element&gt;&#xD;&#xA;        &lt;/xs:choice&gt;&#xD;&#xA;      &lt;/xs:complexType&gt;&#xD;&#xA;    &lt;/xs:element&gt;&#xD;&#xA;  &lt;/xs:schema&gt;&#xD;&#xA;&lt;/NewDataSet&gt;" />
         <Sequence sap:VirtualizedContainerService.HintSize="414,769" sap2010:WorkflowViewState.IdRef="Sequence_24">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:BuildDataTable DataTable="[table_subsites]" DisplayName="Build Data Table" sap:VirtualizedContainerService.HintSize="314,59" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xD;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xD;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xD;&#xA;      &lt;xs:complexType&gt;&#xD;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xD;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xD;&#xA;            &lt;xs:complexType&gt;&#xD;&#xA;              &lt;xs:sequence&gt;&#xD;&#xA;                &lt;xs:element name=&quot;subsite_name&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;subsite_url1&quot; minOccurs=&quot;0&quot;&gt;&#xD;&#xA;                  &lt;xs:simpleType&gt;&#xD;&#xA;                    &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xD;&#xA;                      &lt;xs:maxLength value=&quot;100&quot; /&gt;&#xD;&#xA;                    &lt;/xs:restriction&gt;&#xD;&#xA;                  &lt;/xs:simpleType&gt;&#xD;&#xA;                &lt;/xs:element&gt;&#xD;&#xA;                &lt;xs:element name=&quot;subsite_url2&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;              &lt;/xs:sequence&gt;&#xD;&#xA;            &lt;/xs:complexType&gt;&#xD;&#xA;          &lt;/xs:element&gt;&#xD;&#xA;        &lt;/xs:choice&gt;&#xD;&#xA;      &lt;/xs:complexType&gt;&#xD;&#xA;    &lt;/xs:element&gt;&#xD;&#xA;  &lt;/xs:schema&gt;&#xD;&#xA;&lt;/NewDataSet&gt;" />
+          <ui:BuildDataTable DataTable="[table_subsites]" DisplayName="Build Data Table" sap:VirtualizedContainerService.HintSize="314,59" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xD;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xD;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xD;&#xA;      &lt;xs:complexType&gt;&#xD;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xD;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xD;&#xA;            &lt;xs:complexType&gt;&#xD;&#xA;              &lt;xs:sequence&gt;&#xD;&#xA;                &lt;xs:element name=&quot;subsite_name&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;subsite_url1&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;subsite_url2&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;              &lt;/xs:sequence&gt;&#xD;&#xA;            &lt;/xs:complexType&gt;&#xD;&#xA;          &lt;/xs:element&gt;&#xD;&#xA;        &lt;/xs:choice&gt;&#xD;&#xA;      &lt;/xs:complexType&gt;&#xD;&#xA;    &lt;/xs:element&gt;&#xD;&#xA;  &lt;/xs:schema&gt;&#xD;&#xA;&lt;/NewDataSet&gt;" />
           <Sequence sap:VirtualizedContainerService.HintSize="314,546" sap2010:WorkflowViewState.IdRef="Sequence_4">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -304,13 +311,13 @@
                           <av:PointCollection x:Key="ConnectorLocation">140,335.5 140,365.5 147,365.5 147,386.5</av:PointCollection>
                         </scg:Dictionary>
                       </sap:WorkflowViewStateService.ViewState>
-                      <Sequence DisplayName="navigate to next page" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="Sequence_10">
+                      <Sequence DisplayName="navigate to next page" sap:VirtualizedContainerService.HintSize="647,546" sap2010:WorkflowViewState.IdRef="Sequence_10">
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
-                        <If Condition="[table_subsites.Rows(data_index)(i+1).ToString &lt;&gt; Nothing]" sap:VirtualizedContainerService.HintSize="625,422" sap2010:WorkflowViewState.IdRef="If_3">
+                        <If Condition="[table_subsites.Rows(data_index)(1).ToString &lt;&gt; Nothing and table_subsites.Rows(data_index)(2).ToString &lt;&gt; Nothing]" sap:VirtualizedContainerService.HintSize="625,422" sap2010:WorkflowViewState.IdRef="If_3">
                           <If.Then>
                             <Sequence sap:VirtualizedContainerService.HintSize="336,274" sap2010:WorkflowViewState.IdRef="Sequence_26">
                               <sap:WorkflowViewStateService.ViewState>
@@ -407,67 +414,62 @@
                                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                   </scg:Dictionary>
                                 </sap:WorkflowViewStateService.ViewState>
-                                <Sequence DisplayName="Scraping-contents" sap:VirtualizedContainerService.HintSize="711,500" sap2010:WorkflowViewState.IdRef="Sequence_12">
-                                  <sap:WorkflowViewStateService.ViewState>
-                                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                                      <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                                    </scg:Dictionary>
-                                  </sap:WorkflowViewStateService.ViewState>
-                                  <ui:BrowserScope SearchScope="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" Browser="[browser]" BrowserType="Chrome" DisplayName="Attach Browser 'CompanyCo Page'" sap:VirtualizedContainerService.HintSize="414,376" sap2010:WorkflowViewState.IdRef="BrowserScope_2" InformativeScreenshot="ec15cb7e057bbfc7fa7c543fc5d1140f">
-                                    <ui:BrowserScope.Body>
-                                      <ActivityAction x:TypeArguments="x:Object">
-                                        <ActivityAction.Argument>
-                                          <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
-                                        </ActivityAction.Argument>
-                                        <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="336,230" sap2010:WorkflowViewState.IdRef="Sequence_11">
-                                          <sap:WorkflowViewStateService.ViewState>
-                                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                                            </scg:Dictionary>
-                                          </sap:WorkflowViewStateService.ViewState>
-                                          <ui:ExtractData NextLinkSelector="{x:Null}" ContinueOnError="True" DataTable="[DataTable_contents]" DelayBetweenPagesMS="300" DisplayName="Extract Structured Data 'DIV  applist'" ExtractMetadata="&lt;extract&gt;&lt;row exact='1'&gt;&lt;webctrl tag='div' class='ms-vl-apptile ms-vl-apptilehover '/&gt;&lt;webctrl tag='div' class='ms-vl-appinfo ms-vl-pointer' idx='1'/&gt;&lt;/row&gt;&lt;column exact='1' name='content_name' attr='text'&gt;&lt;webctrl tag='div' class='ms-vl-apptile ms-vl-apptilehover '/&gt;&lt;webctrl tag='div' class='ms-vl-appinfo ms-vl-pointer' idx='1'/&gt;&lt;webctrl tag='div' idx='1'/&gt;&lt;webctrl tag='div' class='ms-vl-apptitleouter' idx='1'/&gt;&lt;webctrl tag='a' class='ms-draggable ms-vl-apptitle ms-listLink' idx='1'/&gt;&lt;/column&gt;&lt;column exact='1' name='content_item' attr='text'&gt;&lt;webctrl tag='div' class='ms-vl-apptile ms-vl-apptilehover '/&gt;&lt;webctrl tag='div' class='ms-vl-appinfo ms-vl-pointer' idx='1'/&gt;&lt;webctrl tag='div' class='ms-metadata ms-vl-appstatus' idx='1'/&gt;&lt;/column&gt;&lt;/extract&gt;" sap:VirtualizedContainerService.HintSize="314,106" sap2010:WorkflowViewState.IdRef="ExtractData_1" MaxNumberOfResults="1000">
-                                            <ui:ExtractData.Target>
-                                              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="052d8a6f463658642cb5aba8f9c40529" Selector="&lt;webctrl id='applist' tag='DIV' /&gt;" WaitForReady="COMPLETE" />
-                                            </ui:ExtractData.Target>
-                                          </ui:ExtractData>
-                                        </Sequence>
-                                      </ActivityAction>
-                                    </ui:BrowserScope.Body>
-                                  </ui:BrowserScope>
-                                </Sequence>
-                                <Sequence DisplayName="Scraping subsites" sap:VirtualizedContainerService.HintSize="711,647" sap2010:WorkflowViewState.IdRef="Sequence_14">
+                                <Sequence DisplayName="Scraping data" sap:VirtualizedContainerService.HintSize="755,917" sap2010:WorkflowViewState.IdRef="Sequence_14">
                                   <sap:WorkflowViewStateService.ViewState>
                                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                     </scg:Dictionary>
                                   </sap:WorkflowViewStateService.ViewState>
-                                  <ui:BrowserScope SearchScope="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" Browser="[browser]" BrowserType="Chrome" DisplayName="Attach Browser 'SiteConte Page'" sap:VirtualizedContainerService.HintSize="689,523" sap2010:WorkflowViewState.IdRef="BrowserScope_3" InformativeScreenshot="605841812a0d475f83f9224bf4119ae4">
+                                  <ui:BrowserScope SearchScope="{x:Null}" Selector="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" Browser="[browser]" BrowserType="Chrome" DisplayName="Attach Browser 'SiteConte Page'" sap:VirtualizedContainerService.HintSize="733,793" sap2010:WorkflowViewState.IdRef="BrowserScope_3" InformativeScreenshot="605841812a0d475f83f9224bf4119ae4">
                                     <ui:BrowserScope.Body>
                                       <ActivityAction x:TypeArguments="x:Object">
                                         <ActivityAction.Argument>
                                           <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
                                         </ActivityAction.Argument>
-                                        <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="675,377" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                                        <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="719,647" sap2010:WorkflowViewState.IdRef="Sequence_13">
                                           <sap:WorkflowViewStateService.ViewState>
                                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                             </scg:Dictionary>
                                           </sap:WorkflowViewStateService.ViewState>
-                                          <If Condition="[i=0]" sap:VirtualizedContainerService.HintSize="653,253" sap2010:WorkflowViewState.IdRef="If_1">
+                                          <If Condition="[i=0]" sap:VirtualizedContainerService.HintSize="697,523" sap2010:WorkflowViewState.IdRef="If_1">
                                             <If.Then>
-                                              <ui:ExtractData NextLinkSelector="{x:Null}" ContinueOnError="True" DataTable="[DataTable_url1]" DelayBetweenPagesMS="300" DisplayName="Extract Structured Data 'TBODY'" ExtractMetadata="&lt;extract&gt;&lt;column exact='1' name='subsite_name' attr='text' name2='subsite_url1' attr2='href'&gt;&lt;webctrl tag='tr' class='ms-itmhover'/&gt;&lt;webctrl tag='td' class='ms-vb-icon' idx='1'/&gt;&lt;webctrl tag='a' class=' ms-draggable' idx='1'/&gt;&lt;/column&gt;&lt;/extract&gt;" sap:VirtualizedContainerService.HintSize="314,106" sap2010:WorkflowViewState.IdRef="ExtractData_2" MaxNumberOfResults="100">
-                                                <ui:ExtractData.Target>
-                                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="dbb362c7a9d0e08e2452a1a8328513e6" Selector="&lt;webctrl tag='TBODY' /&gt;" WaitForReady="COMPLETE" />
-                                                </ui:ExtractData.Target>
-                                              </ui:ExtractData>
+                                              <Sequence sap:VirtualizedContainerService.HintSize="336,376" sap2010:WorkflowViewState.IdRef="Sequence_37">
+                                                <sap:WorkflowViewStateService.ViewState>
+                                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                  </scg:Dictionary>
+                                                </sap:WorkflowViewStateService.ViewState>
+                                                <ui:ExtractData NextLinkSelector="{x:Null}" ContinueOnError="True" DataTable="[DataTable_contents1]" DelayBetweenPagesMS="300" DisplayName="Extract content" ExtractMetadata="&lt;extract&gt;&lt;row exact='1'&gt;&lt;webctrl tag='div' class='ms-vl-apptile ms-vl-apptilehover '/&gt;&lt;webctrl tag='div' class='ms-vl-appinfo ms-vl-pointer' idx='1'/&gt;&lt;/row&gt;&lt;column exact='1' name='content_name' attr='text'&gt;&lt;webctrl tag='div' class='ms-vl-apptile ms-vl-apptilehover '/&gt;&lt;webctrl tag='div' class='ms-vl-appinfo ms-vl-pointer' idx='1'/&gt;&lt;webctrl tag='div' idx='1'/&gt;&lt;webctrl tag='div' class='ms-vl-apptitleouter' idx='1'/&gt;&lt;webctrl tag='a' class='ms-draggable ms-vl-apptitle ms-listLink' idx='1'/&gt;&lt;/column&gt;&lt;column exact='1' name='content_item1' attr='text'&gt;&lt;webctrl tag='div' class='ms-vl-apptile ms-vl-apptilehover '/&gt;&lt;webctrl tag='div' class='ms-vl-appinfo ms-vl-pointer' idx='1'/&gt;&lt;webctrl tag='div' class='ms-metadata ms-vl-appstatus' idx='1'/&gt;&lt;/column&gt;&lt;/extract&gt;" sap:VirtualizedContainerService.HintSize="314,106" sap2010:WorkflowViewState.IdRef="ExtractData_1" MaxNumberOfResults="1000">
+                                                  <ui:ExtractData.Target>
+                                                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="052d8a6f463658642cb5aba8f9c40529" Selector="&lt;webctrl id='applist' tag='DIV' /&gt;" WaitForReady="COMPLETE" />
+                                                  </ui:ExtractData.Target>
+                                                </ui:ExtractData>
+                                                <ui:ExtractData NextLinkSelector="{x:Null}" ContinueOnError="True" DataTable="[DataTable_url1]" DelayBetweenPagesMS="300" DisplayName="Extract subites" ExtractMetadata="&lt;extract&gt;&lt;column exact='1' name='subsite_name' attr='text' name2='subsite_url1' attr2='href'&gt;&lt;webctrl tag='tr' class='ms-itmhover'/&gt;&lt;webctrl tag='td' class='ms-vb-icon' idx='1'/&gt;&lt;webctrl tag='a' class=' ms-draggable' idx='1'/&gt;&lt;/column&gt;&lt;/extract&gt;" sap:VirtualizedContainerService.HintSize="314,106" sap2010:WorkflowViewState.IdRef="ExtractData_2" MaxNumberOfResults="100">
+                                                  <ui:ExtractData.Target>
+                                                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="dbb362c7a9d0e08e2452a1a8328513e6" Selector="&lt;webctrl tag='TBODY' /&gt;" WaitForReady="COMPLETE" />
+                                                  </ui:ExtractData.Target>
+                                                </ui:ExtractData>
+                                              </Sequence>
                                             </If.Then>
                                             <If.Else>
-                                              <ui:ExtractData NextLinkSelector="{x:Null}" ContinueOnError="True" DataTable="[DataTable_url2]" DelayBetweenPagesMS="300" DisplayName="Extract Structured Data 'TBODY'" ExtractMetadata="&lt;extract&gt;&lt;column exact='1' name='subsite_name' attr='text' name2='subsite_url2' attr2='href'&gt;&lt;webctrl tag='tr' class='ms-itmhover'/&gt;&lt;webctrl tag='td' class='ms-vb-icon' idx='1'/&gt;&lt;webctrl tag='a' class=' ms-draggable' idx='1'/&gt;&lt;/column&gt;&lt;/extract&gt;" sap:VirtualizedContainerService.HintSize="314,106" sap2010:WorkflowViewState.IdRef="ExtractData_3" MaxNumberOfResults="100">
-                                                <ui:ExtractData.Target>
-                                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="dbb362c7a9d0e08e2452a1a8328513e6" Selector="&lt;webctrl tag='TBODY' /&gt;" WaitForReady="COMPLETE" />
-                                                </ui:ExtractData.Target>
-                                              </ui:ExtractData>
+                                              <Sequence sap:VirtualizedContainerService.HintSize="336,376" sap2010:WorkflowViewState.IdRef="Sequence_38">
+                                                <sap:WorkflowViewStateService.ViewState>
+                                                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                                                  </scg:Dictionary>
+                                                </sap:WorkflowViewStateService.ViewState>
+                                                <ui:ExtractData NextLinkSelector="{x:Null}" ContinueOnError="True" DataTable="[DataTable_contents2]" DelayBetweenPagesMS="300" DisplayName="Extract content" ExtractMetadata="&lt;extract&gt;&lt;row exact='1'&gt;&lt;webctrl tag='div' class='ms-vl-apptile ms-vl-apptilehover '/&gt;&lt;webctrl tag='div' class='ms-vl-appinfo ms-vl-pointer' idx='1'/&gt;&lt;/row&gt;&lt;column exact='1' name='content_name' attr='text'&gt;&lt;webctrl tag='div' class='ms-vl-apptile ms-vl-apptilehover '/&gt;&lt;webctrl tag='div' class='ms-vl-appinfo ms-vl-pointer' idx='1'/&gt;&lt;webctrl tag='div' idx='1'/&gt;&lt;webctrl tag='div' class='ms-vl-apptitleouter' idx='1'/&gt;&lt;webctrl tag='a' class='ms-draggable ms-vl-apptitle ms-listLink' idx='1'/&gt;&lt;/column&gt;&lt;column exact='1' name='content_item2' attr='text'&gt;&lt;webctrl tag='div' class='ms-vl-apptile ms-vl-apptilehover '/&gt;&lt;webctrl tag='div' class='ms-vl-appinfo ms-vl-pointer' idx='1'/&gt;&lt;webctrl tag='div' class='ms-metadata ms-vl-appstatus' idx='1'/&gt;&lt;/column&gt;&lt;/extract&gt;" sap:VirtualizedContainerService.HintSize="314,106" sap2010:WorkflowViewState.IdRef="ExtractData_4" MaxNumberOfResults="1000">
+                                                  <ui:ExtractData.Target>
+                                                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="052d8a6f463658642cb5aba8f9c40529" Selector="&lt;webctrl id='applist' tag='DIV' /&gt;" WaitForReady="COMPLETE" />
+                                                  </ui:ExtractData.Target>
+                                                </ui:ExtractData>
+                                                <ui:ExtractData NextLinkSelector="{x:Null}" ContinueOnError="True" DataTable="[DataTable_url2]" DelayBetweenPagesMS="300" DisplayName="Extract subsites" ExtractMetadata="&lt;extract&gt;&lt;column exact='1' name='subsite_name' attr='text' name2='subsite_url2' attr2='href'&gt;&lt;webctrl tag='tr' class='ms-itmhover'/&gt;&lt;webctrl tag='td' class='ms-vb-icon' idx='1'/&gt;&lt;webctrl tag='a' class=' ms-draggable' idx='1'/&gt;&lt;/column&gt;&lt;/extract&gt;" sap:VirtualizedContainerService.HintSize="314,106" sap2010:WorkflowViewState.IdRef="ExtractData_3" MaxNumberOfResults="100">
+                                                  <ui:ExtractData.Target>
+                                                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="dbb362c7a9d0e08e2452a1a8328513e6" Selector="&lt;webctrl tag='TBODY' /&gt;" WaitForReady="COMPLETE" />
+                                                  </ui:ExtractData.Target>
+                                                </ui:ExtractData>
+                                              </Sequence>
                                             </If.Else>
                                           </If>
                                         </Sequence>
@@ -531,30 +533,21 @@
                                           <av:PointCollection x:Key="ConnectorLocation">700,458.5 700,428.5 680,428.5 680,343.5</av:PointCollection>
                                         </scg:Dictionary>
                                       </sap:WorkflowViewStateService.ViewState>
-                                      <Sequence sap2010:Annotation.AnnotationText="Copying content dataTable of 1st URL to another table  and adding 2nd URL dataTable comparing content_name." sap:VirtualizedContainerService.HintSize="200,123" sap2010:WorkflowViewState.IdRef="Sequence_30">
+                                      <Sequence sap2010:Annotation.AnnotationText="Copying content dataTable of 1st URL to another table  and adding 2nd URL dataTable comparing content_name." DisplayName="merging contents" sap:VirtualizedContainerService.HintSize="200,123" sap2010:WorkflowViewState.IdRef="Sequence_30">
                                         <sap:WorkflowViewStateService.ViewState>
                                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                             <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                                           </scg:Dictionary>
                                         </sap:WorkflowViewStateService.ViewState>
-                                        <If Condition="[i=0]" sap:VirtualizedContainerService.HintSize="625,617" sap2010:WorkflowViewState.IdRef="If_4">
+                                        <If Condition="[i=0]" sap:VirtualizedContainerService.HintSize="561,617" sap2010:WorkflowViewState.IdRef="If_4">
                                           <If.Then>
-                                            <Sequence sap:VirtualizedContainerService.HintSize="264,246" sap2010:WorkflowViewState.IdRef="Sequence_28">
+                                            <Sequence sap:VirtualizedContainerService.HintSize="200,99" sap2010:WorkflowViewState.IdRef="Sequence_28">
                                               <sap:WorkflowViewStateService.ViewState>
                                                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                                                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                                 </scg:Dictionary>
                                               </sap:WorkflowViewStateService.ViewState>
-                                              <Assign sap:VirtualizedContainerService.HintSize="242,60" sap2010:WorkflowViewState.IdRef="Assign_18">
-                                                <Assign.To>
-                                                  <OutArgument x:TypeArguments="sd:DataTable">[Content_DT2013]</OutArgument>
-                                                </Assign.To>
-                                                <Assign.Value>
-                                                  <InArgument x:TypeArguments="sd:DataTable">[DataTable_contents.Copy]</InArgument>
-                                                </Assign.Value>
-                                              </Assign>
-                                              <ui:ClearDataTable DataTable="[DataTable_contents]" DisplayName="Clear Data Table" sap:VirtualizedContainerService.HintSize="242,22" sap2010:WorkflowViewState.IdRef="ClearDataTable_7" />
                                             </Sequence>
                                           </If.Then>
                                           <If.Else>
@@ -564,23 +557,23 @@
                                                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                                 </scg:Dictionary>
                                               </sap:WorkflowViewStateService.ViewState>
-                                              <ui:AddDataColumn x:TypeArguments="x:Object" Column="{x:Null}" DefaultValue="{x:Null}" AllowDBNull="True" AutoIncrement="False" ColumnName="Item2" DataTable="[Content_DT2016]" DisplayName="Add Data Column" sap:VirtualizedContainerService.HintSize="314,22" sap2010:WorkflowViewState.IdRef="AddDataColumn`1_1" MaxLength="100" Unique="False" />
-                                              <ui:JoinDataTables DataTable1="[Content_DT2013]" DataTable2="[DataTable_contents]" DisplayName="Join Data Tables" sap:VirtualizedContainerService.HintSize="314,59" sap2010:WorkflowViewState.IdRef="JoinDataTables_2" JoinType="Left" OutputDataTable="[Content_DT2016]">
+                                              <ui:JoinDataTables DataTable1="[DataTable_contents1]" DataTable2="[DataTable_contents2]" DisplayName="Join Data Tables" sap:VirtualizedContainerService.HintSize="314,59" sap2010:WorkflowViewState.IdRef="JoinDataTables_2" JoinType="Left" OutputDataTable="[Content_DT2016]">
                                                 <ui:JoinDataTables.Arguments>
                                                   <scg:List x:TypeArguments="ui:JoinOperationArgument" Capacity="4">
                                                     <ui:JoinOperationArgument Operand="{x:Null}" BooleanOperator="And" Operator="EQ">
                                                       <ui:JoinOperationArgument.Column1>
-                                                        <InArgument x:TypeArguments="x:Int32">[0]</InArgument>
+                                                        <InArgument x:TypeArguments="x:String">["content_name"]</InArgument>
                                                       </ui:JoinOperationArgument.Column1>
                                                       <ui:JoinOperationArgument.Column2>
-                                                        <InArgument x:TypeArguments="x:Int32">[0]</InArgument>
+                                                        <InArgument x:TypeArguments="x:String">["content_name"]</InArgument>
                                                       </ui:JoinOperationArgument.Column2>
                                                     </ui:JoinOperationArgument>
                                                   </scg:List>
                                                 </ui:JoinDataTables.Arguments>
                                               </ui:JoinDataTables>
-                                              <ui:ClearDataTable DataTable="[Content_DT2013]" DisplayName="Clear Data Table" sap:VirtualizedContainerService.HintSize="314,22" sap2010:WorkflowViewState.IdRef="ClearDataTable_8" />
-                                              <ui:RemoveDataColumn Column="{x:Null}" ColumnName="{x:Null}" ColumnIndex="2" DataTable="[Content_DT2016]" DisplayName="Remove Data Column" sap:VirtualizedContainerService.HintSize="314,22" sap2010:WorkflowViewState.IdRef="RemoveDataColumn_2" />
+                                              <ui:ClearDataTable DataTable="[DataTable_contents1]" DisplayName="Clear Data Table" sap:VirtualizedContainerService.HintSize="314,22" sap2010:WorkflowViewState.IdRef="ClearDataTable_8" />
+                                              <ui:ClearDataTable DataTable="[DataTable_contents2]" DisplayName="Clear Data Table" sap:VirtualizedContainerService.HintSize="314,22" sap2010:WorkflowViewState.IdRef="ClearDataTable_11" />
+                                              <ui:RemoveDataColumn Column="{x:Null}" ColumnIndex="{x:Null}" ColumnName="content_name_1" DataTable="[Content_DT2016]" DisplayName="Remove Data Column" sap:VirtualizedContainerService.HintSize="314,22" sap2010:WorkflowViewState.IdRef="RemoveDataColumn_2" />
                                               <Assign DisplayName="Delete Empty Row" sap:VirtualizedContainerService.HintSize="314,60" sap2010:WorkflowViewState.IdRef="Assign_19">
                                                 <Assign.To>
                                                   <OutArgument x:TypeArguments="sd:DataTable">[Content_DT2016]</OutArgument>
@@ -655,7 +648,7 @@
                                                   <av:PointCollection x:Key="ConnectorLocation">1000,320 1030,320 1030,264.5 760,264.5 760,39.5 600,39.5</av:PointCollection>
                                                 </scg:Dictionary>
                                               </sap:WorkflowViewStateService.ViewState>
-                                              <Sequence DisplayName="Report" sap:VirtualizedContainerService.HintSize="663,2202" sap2010:WorkflowViewState.IdRef="Sequence_34">
+                                              <Sequence DisplayName="Report" sap:VirtualizedContainerService.HintSize="200,51" sap2010:WorkflowViewState.IdRef="Sequence_34">
                                                 <Sequence.Variables>
                                                   <Variable x:TypeArguments="sd:DataTable" Name="MissedContent_DT" />
                                                   <Variable x:TypeArguments="x:String" Name="txt1" />
@@ -666,7 +659,7 @@
                                                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                                   </scg:Dictionary>
                                                 </sap:WorkflowViewStateService.ViewState>
-                                                <ui:BuildDataTable DataTable="[NotEqlDT]" DisplayName="Build Data Table" sap:VirtualizedContainerService.HintSize="641,59" sap2010:WorkflowViewState.IdRef="BuildDataTable_4" TableInfo="&lt;NewDataSet&gt;&#xD;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xD;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xD;&#xA;      &lt;xs:complexType&gt;&#xD;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xD;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xD;&#xA;            &lt;xs:complexType&gt;&#xD;&#xA;              &lt;xs:sequence&gt;&#xD;&#xA;                &lt;xs:element name=&quot;ContentName&quot; minOccurs=&quot;0&quot;&gt;&#xD;&#xA;                  &lt;xs:simpleType&gt;&#xD;&#xA;                    &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xD;&#xA;                      &lt;xs:maxLength value=&quot;100&quot; /&gt;&#xD;&#xA;                    &lt;/xs:restriction&gt;&#xD;&#xA;                  &lt;/xs:simpleType&gt;&#xD;&#xA;                &lt;/xs:element&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Item1&quot; minOccurs=&quot;0&quot;&gt;&#xD;&#xA;                  &lt;xs:simpleType&gt;&#xD;&#xA;                    &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xD;&#xA;                      &lt;xs:maxLength value=&quot;100&quot; /&gt;&#xD;&#xA;                    &lt;/xs:restriction&gt;&#xD;&#xA;                  &lt;/xs:simpleType&gt;&#xD;&#xA;                &lt;/xs:element&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Item2&quot; minOccurs=&quot;0&quot;&gt;&#xD;&#xA;                  &lt;xs:simpleType&gt;&#xD;&#xA;                    &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xD;&#xA;                      &lt;xs:maxLength value=&quot;100&quot; /&gt;&#xD;&#xA;                    &lt;/xs:restriction&gt;&#xD;&#xA;                  &lt;/xs:simpleType&gt;&#xD;&#xA;                &lt;/xs:element&gt;&#xD;&#xA;              &lt;/xs:sequence&gt;&#xD;&#xA;            &lt;/xs:complexType&gt;&#xD;&#xA;          &lt;/xs:element&gt;&#xD;&#xA;        &lt;/xs:choice&gt;&#xD;&#xA;      &lt;/xs:complexType&gt;&#xD;&#xA;    &lt;/xs:element&gt;&#xD;&#xA;  &lt;/xs:schema&gt;&#xD;&#xA;&lt;/NewDataSet&gt;" />
+                                                <ui:BuildDataTable DataTable="[NotEqlDT]" DisplayName="Build Data Table" sap:VirtualizedContainerService.HintSize="641,59" sap2010:WorkflowViewState.IdRef="BuildDataTable_4" TableInfo="&lt;NewDataSet&gt;&#xD;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xD;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xD;&#xA;      &lt;xs:complexType&gt;&#xD;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xD;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xD;&#xA;            &lt;xs:complexType&gt;&#xD;&#xA;              &lt;xs:sequence&gt;&#xD;&#xA;                &lt;xs:element name=&quot;ContentName&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Item1&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;                &lt;xs:element name=&quot;Item2&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; /&gt;&#xD;&#xA;              &lt;/xs:sequence&gt;&#xD;&#xA;            &lt;/xs:complexType&gt;&#xD;&#xA;          &lt;/xs:element&gt;&#xD;&#xA;        &lt;/xs:choice&gt;&#xD;&#xA;      &lt;/xs:complexType&gt;&#xD;&#xA;    &lt;/xs:element&gt;&#xD;&#xA;  &lt;/xs:schema&gt;&#xD;&#xA;&lt;/NewDataSet&gt;" />
                                                 <Sequence sap:VirtualizedContainerService.HintSize="641,546" sap2010:WorkflowViewState.IdRef="Sequence_31">
                                                   <sap:WorkflowViewStateService.ViewState>
                                                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -721,7 +714,7 @@
                                                                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                                                               </scg:Dictionary>
                                                             </sap:WorkflowViewStateService.ViewState>
-                                                            <If Condition="[row(&quot;content_item&quot;).ToString.Trim &lt;&gt; row(&quot;content_item_1&quot;).ToString.Trim]" sap:VirtualizedContainerService.HintSize="464,694" sap2010:WorkflowViewState.IdRef="If_6">
+                                                            <If Condition="[row(&quot;content_item1&quot;).ToString.Trim &lt;&gt; row(&quot;content_item2&quot;).ToString.Trim]" sap:VirtualizedContainerService.HintSize="464,694" sap2010:WorkflowViewState.IdRef="If_6">
                                                               <If.Then>
                                                                 <Sequence sap:VirtualizedContainerService.HintSize="264,546" sap2010:WorkflowViewState.IdRef="Sequence_35">
                                                                   <sap:WorkflowViewStateService.ViewState>
@@ -750,7 +743,7 @@
                                                                       <OutArgument x:TypeArguments="x:Object">[r1("Item1")]</OutArgument>
                                                                     </Assign.To>
                                                                     <Assign.Value>
-                                                                      <InArgument x:TypeArguments="x:Object">[row("content_item")]</InArgument>
+                                                                      <InArgument x:TypeArguments="x:Object">[row("content_item1")]</InArgument>
                                                                     </Assign.Value>
                                                                   </Assign>
                                                                   <Assign sap:VirtualizedContainerService.HintSize="242,60" sap2010:WorkflowViewState.IdRef="Assign_31">
@@ -758,7 +751,7 @@
                                                                       <OutArgument x:TypeArguments="x:Object">[r1("Item2")]</OutArgument>
                                                                     </Assign.To>
                                                                     <Assign.Value>
-                                                                      <InArgument x:TypeArguments="x:Object">[row("content_item_1")]</InArgument>
+                                                                      <InArgument x:TypeArguments="x:Object">[row("content_item2")]</InArgument>
                                                                     </Assign.Value>
                                                                   </Assign>
                                                                   <ui:AddDataRow ArrayRow="{x:Null}" DataRow="[r1]" DataTable="[NotEqlDT]" DisplayName="Add Data Row" sap:VirtualizedContainerService.HintSize="242,22" sap2010:WorkflowViewState.IdRef="AddDataRow_6" />
